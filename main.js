@@ -15,7 +15,7 @@ const messageParts = {
 let generateRandomNumber = () => { 
     return Math.floor(Math.random() * 3);
 };
-const generateRandomMessage = (messageParts) => {
+const generateRandomMessage = messageParts => {
     const randomFirstPart = messageParts.firstPart[generateRandomNumber()];
     const randomSecondPart = messageParts.secondPart[generateRandomNumber()];
     const randomThirdPart = messageParts.thirdPart[generateRandomNumber()];
@@ -23,5 +23,20 @@ const generateRandomMessage = (messageParts) => {
     return randomMessage;
 };
 
+//Creating a function to make sure that the message is different every time!
+const combinationsUsed = [];
+const outputMessage = message => {
+    if (combinationsUsed.indexOf(message) === -1) {
+        combinationsUsed.push(message); //makes sure combination isn't used again
+        return message; //what the user sees! 
+    } else if (message in combinationsUsed) {
+        generateRandomMessage();
+        outputMessage(); //recursive call to try again with a new message 
+    } else if (combinationsUsed.length === 84) {
+        console.log('You\'ve been 100% inspired already!'); // prints if all of the possible combinations have been used(84)
+    }
+}
+
 //Using generateRandomMessage() to output inspirational message to user!
-console.log(generateRandomMessage(messageParts));
+//console.log(generateRandomMessage(messageParts));
+console.log(outputMessage(generateRandomMessage(messageParts)));
